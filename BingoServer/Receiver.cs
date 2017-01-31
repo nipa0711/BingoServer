@@ -117,60 +117,8 @@ namespace BingoServer
                             // 순서를 랜덤으로 결정한다.
                             Console.WriteLine("순서를 결정합니다.");
                             Program.sendAll("#MSG#|" + "순서를 결정 중 입니다.");
-                            Thread.Sleep(1000);
-                            Program.sendAll("#MSG#|" + "...누가...");
-                            Thread.Sleep(1000);
-                            Program.sendAll("#MSG#|" + "...누가...");
-                            Thread.Sleep(1000);
-                            Program.sendAll("#MSG#|" + "...먼저...");
-                            Thread.Sleep(1000);
-                            Program.sendAll("#MSG#|" + "...시작을...");
-                            Thread.Sleep(1000);
-                            Program.sendAll("#MSG#|" + "...할까?...");
 
-                            int attack = 0;
-
-                            Random random = new Random();
-                            attack = random.Next(0, 100);
-
-                            // 공격권 부여
-                            if (attack % 2 == 0)
-                            {
-                                string first = Program.userList[0];
-
-                                GameManager.copyBingo(first);
-
-                                Program.sendAll("#MSG#|" + first + "님이 먼저입니다.");
-                                Console.WriteLine("{0}의 선제 공격.", first);
-
-                                TcpClient send = Program.bingoReadyUser[first];
-                                NetworkStream stream = send.GetStream();
-                                StreamWriter sendMsg = new StreamWriter(stream, Encoding.UTF8);
-
-                                sendMsg.WriteLine("#Attack#|"); // 메시지 보내기
-                                sendMsg.Flush();
-
-                                Program.nextUser = Program.userList[1]; // 다음 턴
-
-                            }
-                            else
-                            {
-                                string first = Program.userList[1];
-
-                                GameManager.copyBingo(first);
-
-                                Program.sendAll("#MSG#|" + first + "님이 먼저입니다.");
-                                Console.WriteLine("{0}의 선제 공격.", first);
-
-                                TcpClient send = Program.bingoReadyUser[first];
-                                NetworkStream stream = send.GetStream();
-                                StreamWriter sendMsg = new StreamWriter(stream, Encoding.UTF8);
-
-                                sendMsg.WriteLine("#Attack#|"); // 메시지 보내기
-                                sendMsg.Flush();
-
-                                Program.nextUser = Program.userList[0]; // 다음 턴
-                            }
+                            GameManager.whoFirst();
                         }
 
                     }
