@@ -17,8 +17,8 @@ namespace BingoServer
         public void startClient(TcpClient clientSocket)
         {
             client = clientSocket;
-            Thread chat_thread = new Thread(listening);
-            chat_thread.Start();
+            Thread chat_thread = new Thread(listening); // listening 함수를 쓰레드로 사용
+            chat_thread.Start(); // 쓰레드 시작
         }              
 
         public void listening()
@@ -39,7 +39,7 @@ namespace BingoServer
 
                     user = Program.clientList[client];
 
-                    if (GetMessage == "G00D-BY2")
+                    if (GetMessage == "G00D-BY2") // 정상적인 접속 종료
                     {
                         Console.WriteLine("{0}님이 접속을 종료했습니다. ID : {1} [{2}]", ((IPEndPoint)client.Client.RemoteEndPoint).ToString(), user, DateTime.Now);
                         Program.clientList.Remove(client); // 키 값으로 값 삭제
@@ -73,7 +73,7 @@ namespace BingoServer
 
                         break;
                     }
-                    else if (MsgResult[0] == "#0rder#")
+                    else if (MsgResult[0] == "#0rder#") // 빙고 번호 교환
                     {
                         Console.WriteLine("Game Log: {0}님이 {1}을 불렀습니다. [{2}]", user, MsgResult[1], DateTime.Now);
                         Program.sendAll(GetMessage);
@@ -104,7 +104,7 @@ namespace BingoServer
                             }
                         }
                     }
-                    else if (MsgResult[0] == "#ready#")
+                    else if (MsgResult[0] == "#ready#") // 유저의 빙고 준비완료
                     {
                         Console.WriteLine("{0}님이 준비되었습니다. [{1}]", user, DateTime.Now);
                         Program.sendAll("#MSG#|" + user + "님이 준비되었습니다.");
@@ -174,13 +174,13 @@ namespace BingoServer
                         }
 
                     }
-                    else if (MsgResult[0] == "#MSG#")
+                    else if (MsgResult[0] == "#MSG#") // 채팅
                     {
                         Program.sendAll(GetMessage);
                         Console.WriteLine("Chat Log: {0} - {1} [{2}]", ((IPEndPoint)client.Client.RemoteEndPoint).ToString(), MsgResult[1], DateTime.Now);
                     }
                 }
-                catch (Exception ee)
+                catch (Exception ee) // 비정상적인 오류
                 {
                     Program.clientList.Remove(client); // 키 값으로 값 삭제
                     Program.bingoReadyUser.Remove(user);

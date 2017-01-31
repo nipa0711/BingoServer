@@ -17,7 +17,7 @@ namespace BingoServer
                 Program.playerA = Program.userList[0];
                 Program.playerB = Program.userList[1];
 
-                string[] MsgBingo1 = msg1.Split(',');
+                string[] MsgBingo1 = msg1.Split(','); // 구분자로 메세지 분리
                 string[] MsgBingo2 = msg2.Split(',');
 
                 int count = 0;
@@ -25,6 +25,7 @@ namespace BingoServer
                 {
                     for (int j = 0; j < 5; j++)
                     {
+                        // 빙고판에 각 유저의 빙고판 복사
                         Program.bingoA[i, j] = Convert.ToInt32(MsgBingo1[count]);
                         Program.bingoB[i, j] = Convert.ToInt32(MsgBingo2[count]);
                         count++;
@@ -39,7 +40,7 @@ namespace BingoServer
                 Program.playerA = Program.userList[1];
                 Program.playerB = Program.userList[0];
 
-                string[] MsgBingo1 = msg1.Split(',');
+                string[] MsgBingo1 = msg1.Split(','); // 구분자로 메세지 분리
                 string[] MsgBingo2 = msg2.Split(',');
 
                 int count = 0;
@@ -47,6 +48,7 @@ namespace BingoServer
                 {
                     for (int j = 0; j < 5; j++)
                     {
+                        // 빙고판에 각 유저의 빙고판 복사
                         Program.bingoA[i, j] = Convert.ToInt32(MsgBingo1[count]);
                         Program.bingoB[i, j] = Convert.ToInt32(MsgBingo2[count]);
                         count++;
@@ -61,6 +63,7 @@ namespace BingoServer
             {
                 for (int j = 0; j < 5; j++)
                 {
+                    // 빙고판에서 해당 번호를 찾아서 0으로 표기
                     if (Program.bingoA[i, j] == number)
                     {
                         Program.bingoA[i, j] = 0;
@@ -180,6 +183,7 @@ namespace BingoServer
                 playerB_check++;
             }
 
+            // 새로운 빙고라면
             if (playerA_check != Program.playerA_bingoCount)
             {
                 Console.WriteLine("Game Log: {0}님의 {1}BINGO! [{2}]", Program.playerA, playerA_check, DateTime.Now);
@@ -194,6 +198,7 @@ namespace BingoServer
                 Program.sendAll("#MSG#|" + Program.playerB + "님의 " + playerB_check + " BINGO! ====");
             }
 
+            // 승리조건
             if (playerA_check >= 3 && playerB_check < 3)
             {
                 Console.WriteLine("Game Log: {0}님이 승리했습니다. [{1}]", Program.playerA, DateTime.Now);
@@ -221,9 +226,13 @@ namespace BingoServer
         public static void roundClear()
         {
             Program.sendAll("#GAME-0VER#|");
+
+            // 준비완료된 빙고유저 삭제
             Program.bingoReadyUser.Remove(Program.playerA);
-            Program.saveUserBingo.Remove(Program.playerA);
             Program.bingoReadyUser.Remove(Program.playerB);
+
+            // 저장된 빙고판 삭제
+            Program.saveUserBingo.Remove(Program.playerA);
             Program.saveUserBingo.Remove(Program.playerB);
         }
     }

@@ -27,7 +27,7 @@ namespace BingoServer
 
         public static void sendAll(string msg)
         {
-            foreach (var list in clientList)
+            foreach (var list in clientList) // 클라이언트 리스트 전체에게
             {
                 TcpClient client = list.Key as TcpClient;
                 NetworkStream stream = client.GetStream();
@@ -37,7 +37,6 @@ namespace BingoServer
                 sendMsg.Flush();
             }
         }
-
 
         static void Main(string[] args)
         {
@@ -77,19 +76,19 @@ namespace BingoServer
 
                         if (clientList.ContainsKey(client) == true || userList[0] == MsgResult[1])
                         {
-                            SW.WriteLine("permission-denied");
+                            SW.WriteLine("permission-denied"); // 접속 거절
                             SW.Flush();
                             Console.WriteLine("클라이언트 {0}의 연결을 차단했습니다. - ID : {1} [{2}]", ((IPEndPoint)client.Client.RemoteEndPoint).ToString(), MsgResult[1], DateTime.Now); // 클라이언트 구별
                         }
                         else if (clientList.Count >= 2)
                         {
-                            SW.WriteLine("#Full#");
+                            SW.WriteLine("#Full#"); // 방이 가득참
                             SW.Flush();
                             Console.WriteLine("방이 가득찼습니다. [{0}]", DateTime.Now);
                         }
                         else
                         {
-                            SW.WriteLine("permission-granted");
+                            SW.WriteLine("permission-granted"); // 접속 승인
                             Console.WriteLine("접속이 승인되었습니다. [{0}]", DateTime.Now);
                             SW.Flush();
                             userList[tryingCount] = MsgResult[1];
